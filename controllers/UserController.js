@@ -6,11 +6,12 @@ const { jwt_secret } = require("../config/keys");
 const UserController = {
   async register(req, res) {
     try {
-      const password = await bcrypt.hash(req.body, password, 10);
+      const password = await bcrypt.hash(req.body.password, 10);
       const user = await User.create({ ...req.body, password, role: "user" });
       res.status(201).send({ msg: "Usuario registrado con éxito", user });
     } catch (error) {
       console.error(error);
+      res.status(500).send({ msg: "Ha habido un error al registrarte", error });
     }
   },
 
@@ -22,7 +23,7 @@ const UserController = {
       if (!user) {
         return res.status(400).send({ msg: "Correo o contraseña incorrectos" });
       }
-      const isMatch = bcrypt.compare(req.body.password, user.password);
+      const isMatch = await bcrypt.compare(req.body.password, user.password);
       if (!isMatch) {
         return res.status(400).send({ msg: "Correo o contraseña incorrectos" });
       }
@@ -33,6 +34,7 @@ const UserController = {
       res.send({ msg: "Bienvenid@" + user.name, token });
     } catch (error) {
       console.error(error);
+      res.status(500).send({ msg: "Ha habido un error al logearte", error });
     }
   },
 
