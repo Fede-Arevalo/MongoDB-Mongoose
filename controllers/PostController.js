@@ -3,7 +3,10 @@ const Post = require("../models/Post");
 const PostController = {
   async createPost(req, res) {
     try {
-      const post = await Post.create(req.body);
+      const post = await Post.create({
+        ...req.body,
+        userId: req.user._id,
+      });
       res.status(201).send(post);
     } catch (error) {
       console.error(error);
@@ -41,7 +44,7 @@ const PostController = {
     try {
       const post = await Post.find({
         $text: {
-          $search: req.params.name,
+          $search: req.params.title,
         },
       });
       res.send(post);
@@ -55,9 +58,13 @@ const PostController = {
 
   async updatePostById(req, res) {
     try {
-      const post = await Post.findByIdAndUpdate(req.params._id, req.body, {
-        new: true,
-      });
+      const post = await Post.findByIdAndUpdate(
+        req.params._id,
+        { ...req.body, userId: req.user._id },
+        {
+          new: true,
+        }
+      );
       res.send({ msg: "Post actualizado con éxito!", post });
     } catch (error) {
       console.error(error);
