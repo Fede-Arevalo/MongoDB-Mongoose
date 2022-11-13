@@ -3,7 +3,7 @@ const router = express.Router();
 const UserController = require("../controllers/UserController");
 const { authentication } = require("../middleware/authentication");
 
-router.post("/registerUser", UserController.register);
+router.post("/register", UserController.register);
 router.post("/login", UserController.login);
 router.delete("/logout", authentication, UserController.logout);
 
