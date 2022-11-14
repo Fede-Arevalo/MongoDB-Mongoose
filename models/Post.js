@@ -9,17 +9,15 @@ const PostSchema = new mongoose.Schema(
       type: ObjectId,
       ref: "User",
     },
+    date: { type: Date, default: Date.now },
     comments: [
       {
         body: String,
         date: Date,
-        username: String,
+        userId: { type: ObjectId, ref: "User" },
       },
     ],
-    date: { type: Date, default: Date.now },
-    meta: {
-      likes: Number,
-    },
+    likes: [{ type: ObjectId }],
   },
   { timestamps: true }
 );

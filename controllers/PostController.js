@@ -18,7 +18,10 @@ const PostController = {
 
   async getAllPosts(req, res) {
     try {
-      const posts = await Post.find();
+      const { page = 1, limit = 10 } = req.query;
+      const posts = await Post.find()
+        .limit(limit)
+        .skip((page - 1) * limit);
       res.send(posts);
     } catch (error) {
       console.error(error);
@@ -83,6 +86,20 @@ const PostController = {
       res
         .status(500)
         .send({ msg: "Ha habido un problema al eliminar el post" });
+    }
+  },
+
+  async like(req, res) {
+    try {
+      const post = await Post.findByIdAndUpdate(
+        req.params._id,
+        { $push: { likes: req.user._id } },
+        { new: true }
+      );
+      res.send(post);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ msg: "Ha habido un problema con tu like" });
     }
   },
 };
