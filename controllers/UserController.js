@@ -54,7 +54,9 @@ const UserController = {
 
   async loggedIn(req, res) {
     try {
-      const user = await User.findById(req.user._id);
+      const user = await User.findById(req.user._id).populate({
+        path: "postIds",
+      });
       res.send(user);
     } catch (error) {
       console.error(error);

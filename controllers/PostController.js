@@ -1,4 +1,5 @@
 const Post = require("../models/Post");
+const User = require("../models/User");
 
 const PostController = {
   async createPost(req, res) {
@@ -6,6 +7,9 @@ const PostController = {
       const post = await Post.create({
         ...req.body,
         userId: req.user._id,
+      });
+      await User.findByIdAndUpdate(req.user._id, {
+        $push: { postIds: post._id },
       });
       res.status(201).send(post);
     } catch (error) {
@@ -20,6 +24,7 @@ const PostController = {
     try {
       const { page = 1, limit = 10 } = req.query;
       const posts = await Post.find()
+        .populate("comments.userId")
         .limit(limit)
         .skip((page - 1) * limit);
       res.send(posts);
