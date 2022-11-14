@@ -89,6 +89,24 @@ const PostController = {
     }
   },
 
+  async insertComment(req, res) {
+    try {
+      const post = await Post.findByIdAndUpdate(
+        req.params._id,
+        {
+          $push: {
+            comments: { comment: req.body.comment, userId: req.user_id },
+          },
+        },
+        { new: true }
+      );
+      res.send(post);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ msg: "Ha habido un problema con tu comentario" });
+    }
+  },
+
   async like(req, res) {
     try {
       const post = await Post.findByIdAndUpdate(

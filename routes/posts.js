@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const PostController = require("../controllers/PostController");
 const { authentication, isAuthor } = require("../middlewares/authentication");
+const Post = require("../models/Post");
 
 router.post("/createPost", authentication, PostController.createPost);
 router.get("/getAllPosts", PostController.getAllPosts);
@@ -19,5 +20,7 @@ router.delete(
   isAuthor,
   PostController.deletePostById
 );
+router.put("/insertComment/:_id", authentication, PostController.insertComment);
+router.put("/like/:_id", authentication, PostController.like);
 
 module.exports = router;
