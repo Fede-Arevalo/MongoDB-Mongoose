@@ -37,12 +37,10 @@ const isAuthor = async (req, res, next) => {
     next();
   } catch (error) {
     console.error(error);
-    return res
-      .status(500)
-      .send({
-        msg: "Ha habido un problema al comprobar la autoría del post",
-        error,
-      });
+    return res.status(500).send({
+      msg: "Ha habido un problema al comprobar la autoría del post",
+      error,
+    });
   }
 };
 
