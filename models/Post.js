@@ -9,11 +9,9 @@ const PostSchema = new mongoose.Schema(
       type: ObjectId,
       ref: "User",
     },
-    date: { type: Date, default: Date.now },
     comments: [
       {
         comment: String,
-        date: { type: Date, default: Date.now },
         userId: { type: ObjectId, ref: "User" },
       },
     ],
@@ -25,6 +23,15 @@ const PostSchema = new mongoose.Schema(
 PostSchema.index({
   title: "text",
 });
+
+
+PostSchema.methods.toJSON = function () {
+  const post = this._doc;
+  delete post.createdAt;
+  delete post.updatedAt; 
+  delete post.__v; 
+  return post;
+};
 
 const Post = mongoose.model("Post", PostSchema);
 
