@@ -22,5 +22,6 @@ router.delete(
 );
 router.put("/insertComment/:_id", authentication, PostController.insertComment);
 router.put("/like/:_id", authentication, PostController.like);
+router.put("/disLike/:_id", authentication, PostController.disLike);
 
 module.exports = router;
