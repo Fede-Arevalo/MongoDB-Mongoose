@@ -2,7 +2,7 @@ const Post = require("../models/Post");
 const User = require("../models/User");
 
 const PostController = {
-  async createPost(req, res) {
+  async createPost(req, res, next) {
     try {
       const post = await Post.create({
         ...req.body,
@@ -14,9 +14,7 @@ const PostController = {
       res.status(201).send(post);
     } catch (error) {
       console.error(error);
-      res
-        .status(500)
-        .send({ message: "Ha habido un problema al crear el post", error });
+      next(error)
     }
   },
 

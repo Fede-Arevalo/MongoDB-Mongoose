@@ -3,8 +3,14 @@ const ObjectId = mongoose.SchemaTypes.ObjectId;
 
 const PostSchema = new mongoose.Schema(
   {
-    title: String,
-    body: String,
+    title: {
+      type: String,
+      required: [true, "Por favor rellena el título del post"],
+    },
+    body: {
+      type: String,
+      required: [true, "Por favor rellena el cuerpo del post"],
+    },
     userId: {
       type: ObjectId,
       ref: "User",
