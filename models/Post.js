@@ -3,6 +3,10 @@ const ObjectId = mongoose.SchemaTypes.ObjectId;
 
 const PostSchema = new mongoose.Schema(
   {
+    img: {
+      data: Buffer,
+      contentType: String,
+    },
     title: {
       type: String,
       required: [true, "Por favor rellena el título del post"],
@@ -30,12 +34,11 @@ PostSchema.index({
   title: "text",
 });
 
-
 PostSchema.methods.toJSON = function () {
   const post = this._doc;
   delete post.createdAt;
-  delete post.updatedAt; 
-  delete post.__v; 
+  delete post.updatedAt;
+  delete post.__v;
   return post;
 };
 
