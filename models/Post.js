@@ -3,9 +3,8 @@ const ObjectId = mongoose.SchemaTypes.ObjectId;
 
 const PostSchema = new mongoose.Schema(
   {
-    img: {
-      data: Buffer,
-      contentType: String,
+    image: {
+      type: String,
     },
     title: {
       type: String,

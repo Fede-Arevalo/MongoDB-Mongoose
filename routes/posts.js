@@ -2,9 +2,14 @@ const express = require("express");
 const router = express.Router();
 const PostController = require("../controllers/PostController");
 const { authentication, isAuthor } = require("../middlewares/authentication");
-const Post = require("../models/Post");
+const upload = require("../middlewares/upload");
 
-router.post("/createPost", authentication, PostController.createPost);
+router.post(
+  "/createPost",
+  authentication,
+  upload.single("image"),
+  PostController.createPost
+);
 router.get("/getAllPosts", PostController.getAllPosts);
 router.get("/getPostById/:_id", PostController.getPostById);
 router.get("/getPostByName/:title", PostController.getPostByName);
