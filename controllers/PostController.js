@@ -67,7 +67,7 @@ const PostController = {
     try {
       const post = await Post.findByIdAndUpdate(
         req.params._id,
-        { ...req.body, userId: req.user._id },
+        { ...req.body, userId: req.user._id, image: req.file.filename },
         {
           new: true,
         }

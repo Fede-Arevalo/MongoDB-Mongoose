@@ -17,6 +17,7 @@ router.put(
   "/updatePostById/:_id",
   authentication,
   isAuthor,
+  upload.single("image"),
   PostController.updatePostById
 );
 router.delete(
