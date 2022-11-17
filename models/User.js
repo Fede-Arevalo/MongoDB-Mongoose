@@ -24,6 +24,9 @@ const UserSchema = new mongoose.Schema(
     role: String,
     tokens: [],
     postIds: [{ type: ObjectId, ref: "Post" }],
+    commentIds: [{ type: ObjectId, ref: "Comment" }],
+    followingIds: [{ type: ObjectId, ref: "User" }],
+    followerIds: [{ type: ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );
@@ -33,8 +36,8 @@ UserSchema.methods.toJSON = function () {
   delete user.tokens;
   delete user.password;
   delete user.createdAt;
-  delete user.updatedAt; 
-  delete user.__v; 
+  delete user.updatedAt;
+  delete user.__v;
   return user;
 };
 

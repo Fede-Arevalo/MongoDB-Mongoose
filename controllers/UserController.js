@@ -31,7 +31,7 @@ const UserController = {
       if (user.tokens.length > 4) user.tokens.shift;
       user.tokens.push(token);
       await user.save();
-      res.send({ msg: "Bienvenid@" + user.name, token });
+      res.send({ msg: "Bienvenid@ " + user.name, token });
     } catch (error) {
       console.error(error);
       res.status(500).send({ msg: "Ha habido un error al logearte", error });
@@ -56,6 +56,9 @@ const UserController = {
     try {
       const user = await User.findById(req.user._id).populate({
         path: "postIds",
+        path: "commentIds",
+        path: "followingIds",
+        path: "followerIds",
       });
       res.send(user);
     } catch (error) {

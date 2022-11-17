@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Post = require("../models/Post");
+const Comment = require("../models/Comment");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -28,7 +29,7 @@ const isAdmin = async (req, res, next) => {
   next();
 };
 
-const isAuthor = async (req, res, next) => {
+const isPostAuthor = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params._id);
     if (post.userId.toString() !== req.user._id.toString()) {
@@ -44,4 +45,22 @@ const isAuthor = async (req, res, next) => {
   }
 };
 
-module.exports = { authentication, isAdmin, isAuthor };
+const isCommentAuthor = async (req, res, next) => {
+  try {
+    const comment = await Comment.findById(req.params._id);
+    if (comment.userId.toString() !== req.user._id.toString()) {
+      return res
+        .status(403)
+        .send({ msg: "Este comentario no es de tu propiedad" });
+    }
+    next();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({
+      msg: "Ha habido un problema al comprobar la autoría del comentario",
+      error,
+    });
+  }
+};
+
+module.exports = { authentication, isAdmin, isPostAuthor, isCommentAuthor };
