@@ -1,5 +1,6 @@
 const Comment = require("../models/Comment");
 const Post = require("../models/Post");
+const User = require("../models/User");
 
 const CommentController = {
   async createComment(req, res, next) {
@@ -11,6 +12,9 @@ const CommentController = {
         image: req.file?.filename,
       });
       await Post.findByIdAndUpdate(req.params._id, {
+        $push: { commentIds: comment._id },
+      });
+      await User.findByIdAndUpdate(req.user._id, {
         $push: { commentIds: comment._id },
       });
       res.status(201).send({ msg: "Comentario creado con éxito!", comment });
@@ -72,6 +76,34 @@ const CommentController = {
       res
         .status(500)
         .send({ msg: "Ha habido un problema al eliminar el comentario" });
+    }
+  },
+
+  async like(req, res) {
+    try {
+      const comment = await Comment.findByIdAndUpdate(
+        req.params._id,
+        { $push: { likes_comment: req.user._id } },
+        { new: true }
+      );
+      res.send(comment);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ msg: "Ha habido un problema con tu like en el comentario" });
+    }
+  },
+
+  async disLike(req, res) {
+    try {
+      const comment = await Comment.findByIdAndUpdate(
+        req.params._id,
+        { $pull: { likes_comment: req.user._id } },
+        { new: true }
+      );
+      res.send(comment);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ msg: "Ha habido un problema con tu disLike en el comentario" });
     }
   },
 };

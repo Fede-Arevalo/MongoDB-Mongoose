@@ -7,7 +7,7 @@ const CommentSchema = new mongoose.Schema(
     image: { type: String },
     postId: { type: ObjectId, ref: "Post" },    
     userId: { type: ObjectId, ref: "User" },
-    likes: [{ type: ObjectId, ref: "User" }],
+    likes_comment: [{ type: ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );

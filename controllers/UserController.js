@@ -51,8 +51,7 @@ const UserController = {
 
   async getAllUsers(req, res) {
     try {
-      const users = await User.find()
-        .populate("commentIds")        
+      const users = await User.find()      
       res.send(users);
     } catch (error) {
       console.error(error);

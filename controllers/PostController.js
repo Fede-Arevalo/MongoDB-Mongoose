@@ -97,13 +97,13 @@ const PostController = {
     try {
       const post = await Post.findByIdAndUpdate(
         req.params._id,
-        { $push: { likes: req.user._id } },
+        { $push: { likes_post: req.user._id } },
         { new: true }
       );
       res.send(post);
     } catch (error) {
       console.error(error);
-      res.status(500).send({ msg: "Ha habido un problema con tu like" });
+      res.status(500).send({ msg: "Ha habido un problema con tu like en el post" });
     }
   },
 
@@ -111,13 +111,13 @@ const PostController = {
     try {
       const post = await Post.findByIdAndUpdate(
         req.params._id,
-        { $pull: { likes: req.user._id } },
+        { $pull: { likes_post: req.user._id } },
         { new: true }
       );
       res.send(post);
     } catch (error) {
       console.error(error);
-      res.status(500).send({ msg: "Ha habido un problema con tu disLike" });
+      res.status(500).send({ msg: "Ha habido un problema con tu disLike en el post" });
     }
   },
 };

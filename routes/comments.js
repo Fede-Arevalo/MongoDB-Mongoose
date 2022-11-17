@@ -1,10 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const CommentController = require("../controllers/CommentController");
-const {
-  authentication,
-  isCommentAuthor,
-} = require("../middlewares/authentication");
+const { authentication, isCommentAuthor } = require("../middlewares/authentication");
 const upload = require("../middlewares/upload");
 
 router.post(
@@ -28,5 +25,7 @@ router.delete(
   isCommentAuthor,
   CommentController.deleteCommentById
 );
+router.put("/like/:_id", authentication, CommentController.like);
+router.put("/disLike/:_id", authentication, CommentController.disLike);
 
 module.exports = router;
