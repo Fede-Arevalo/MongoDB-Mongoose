@@ -20,6 +20,78 @@ const UserController = {
     }
   },
 
+  async getUserById(req, res) {
+    try {
+      const user = await User.findById(req.params._id)
+      res.send(user);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({
+        msg: "Ha habido un problema al consultar el usuario",
+        error,
+      });
+    }
+  },
+
+  async getUserByName(req, res) {
+    try {
+      const user = await User.find({
+        $text: {
+          $search: req.params.name,
+        },
+      });
+      res.send(user);
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .send({ msg: "Ha habido un problema al consultar el usuario", error });
+    }
+  },
+
+  async getAllUsers(req, res) {
+    try {
+      const users = await User.find()
+        .populate("commentIds")        
+      res.send(users);
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .send({ msg: "Ha habido un problema al traer todos los usuarios", error });
+    }
+  },
+
+  async updateUserById(req, res) {
+    try {
+      const user = await User.findByIdAndUpdate(
+        req.params._id,
+        { ...req.body, image: req.file?.filename },
+        {
+          new: true,
+        }
+      );
+      res.send({ msg: "Usuario actualizado con éxito!", user });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .send({ msg: "Ha habido un problema al actualizar el usuario", error });
+    }
+  },
+
+  async deleteUserById(req, res) {
+    try {
+      const user = await User.findByIdAndDelete(req.params._id);
+      res.send({ msg: "Usuario eliminado", user });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .send({ msg: "Ha habido un problema al eliminar el usuario" });
+    }
+  },
+
   async login(req, res) {
     try {
       const user = await User.findOne({
@@ -72,36 +144,6 @@ const UserController = {
         msg: "Ha habido un problema al consultar el usuario logeado",
         error,
       });
-    }
-  },
-
-  async updateUserById(req, res) {
-    try {
-      const user = await User.findByIdAndUpdate(
-        req.params._id,
-        { ...req.body, image: req.file?.filename },
-        {
-          new: true,
-        }
-      );
-      res.send({ msg: "Usuario actualizado con éxito!", user });
-    } catch (error) {
-      console.error(error);
-      res
-        .status(500)
-        .send({ msg: "Ha habido un problema al actualizar el usuario", error });
-    }
-  },
-
-  async deleteUserById(req, res) {
-    try {
-      const user = await User.findByIdAndDelete(req.params._id);
-      res.send({ msg: "Usuario eliminado", user });
-    } catch (error) {
-      console.error(error);
-      res
-        .status(500)
-        .send({ msg: "Ha habido un problema al eliminar el usuario" });
     }
   },
 };
