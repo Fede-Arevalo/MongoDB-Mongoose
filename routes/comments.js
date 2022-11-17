@@ -19,6 +19,7 @@ router.put(
   "/updateCommentById/:_id",
   authentication,
   isCommentAuthor,
+  upload.single("image"),
   CommentController.updateCommentById
 );
 router.delete(

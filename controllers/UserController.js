@@ -7,7 +7,12 @@ const UserController = {
   async register(req, res, next) {
     try {
       const password = await bcrypt.hash(req.body.password, 10);
-      const user = await User.create({ ...req.body, password, role: "user" });
+      const user = await User.create({
+        ...req.body,
+        password,
+        image: req.file?.filename,
+        role: "user",
+      });
       res.status(201).send({ msg: "Usuario registrado con éxito", user });
     } catch (error) {
       console.error(error);
@@ -67,6 +72,36 @@ const UserController = {
         msg: "Ha habido un problema al consultar el usuario logeado",
         error,
       });
+    }
+  },
+
+  async updateUserById(req, res) {
+    try {
+      const user = await User.findByIdAndUpdate(
+        req.params._id,
+        { ...req.body, image: req.file?.filename },
+        {
+          new: true,
+        }
+      );
+      res.send({ msg: "Usuario actualizado con éxito!", user });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .send({ msg: "Ha habido un problema al actualizar el usuario", error });
+    }
+  },
+
+  async deleteUserById(req, res) {
+    try {
+      const user = await User.findByIdAndDelete(req.params._id);
+      res.send({ msg: "Usuario eliminado", user });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .send({ msg: "Ha habido un problema al eliminar el usuario" });
     }
   },
 };
