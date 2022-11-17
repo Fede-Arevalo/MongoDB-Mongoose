@@ -4,8 +4,15 @@ Este proyecto consiste en el desarrollo del backend de una Red Social, combinand
 ## 🚧 Desarrollo de API REST capaz de lo siguiente: 
 - Registro de usuarios usando Bcrypt.
 - Login de usuarios + token + middleware.
-- CRUD de endpoints.
+- CRUD de endpoints:
+  - Usuarios.
+  - Posts.
+  - Comentarios.
 - Dar/quitar Like a un post.
+- Dar/quitar Like a un comentario.
+- Paginación de Posts para que se carguen de a 10 por página.
+- Comprobación de "autoría" a la hora de actualizar o eliminar posts y comentarios.
+- Implementación de Multar para subir imágenes a la hora de crear usuario, posts y comentarios.
 - Backend disponible en producción con Railway.
 
 ## 🦾 Tecnologías usadas.
@@ -15,6 +22,7 @@ Este proyecto consiste en el desarrollo del backend de una Red Social, combinand
 - Nodemon (Dev Dependency)
 - Bcrypt
 - JWT
+- Multer
 - Dotenv
 - Railway
 - Postman
@@ -34,22 +42,24 @@ Este proyecto consiste en el desarrollo del backend de una Red Social, combinand
 > Luego edite el campo de "PORT" con su puerto local preferido y el campo de "JWT_SECRET" con su palabra secreta. 
 Para agregar la ruta en "MONGO_URI" previamente deberá crear una base de datos en "MongoDB Atlas".
 
-4 - Para utilizar los endpoints de manera "local" en POSTMAN debe importar la colección desde el siguiente enlace.
-> https://www.getpostman.com/collections/36ca725681b39b8a07b4
+4 - Cree una carpeta "uploads" para guardar las imágenes con Multer.
 
-5 - En POSTMAN deberá actualizar el TOKEN que devuelve al hacer LOGIN, para utilizar los endpoints que requieren autenticación. 
-> HEADERS => KEY = Authorization, VALLUE = "TOKEN"
+5 - Para utilizar los endpoints de manera "local" en POSTMAN debe importar la colección desde el siguiente enlace.
+> https://api.postman.com/collections/24080948-9ae004b8-dbee-4937-a76d-369789603865?access_key=PMAT-01GJ3X1K290Z89RZXP91FSCAQY
 
-6 - El proyecto está listo para comenzar!
+6 - En POSTMAN deberá actualizar el TOKEN que devuelve al hacer LOGIN, para utilizar los endpoints que requieren autenticación. 
+> HEADERS => KEY = Authorization, VALLUE = "TOKEN" o en "Enviroments" > "Mongoose Enviroment" > "TOKEN" > "CURRENT VALUE"
+
+7 - El proyecto está listo para comenzar!
 > npm start
 
 # 📷 Preview 
 
 ## 👤 Registro de usuario
-![image](https://user-images.githubusercontent.com/105200893/201909668-07aea3f1-a8a5-4559-9552-5917e4dd2e02.png)
+![image](https://user-images.githubusercontent.com/105200893/202576750-9ec8d84b-28c1-4a43-81fd-24c8f1963a63.png)
 
 ## 💻✅ Login de usuario
-![image](https://user-images.githubusercontent.com/105200893/201909645-aefe479e-476a-4ee2-99b1-2822d3e7d89a.png)
+![image](https://user-images.githubusercontent.com/105200893/202576847-b2809161-5647-412a-89f9-5166c32ca473.png)
 
 ## ⚠️ Edición del TOKEN según usuario logeado 
-![image](https://user-images.githubusercontent.com/105200893/201909591-f69ef981-01a2-491e-bf14-3aa69ae8e47a.png)
+![image](https://user-images.githubusercontent.com/105200893/202577205-641ce7eb-e078-4e74-ba92-fac0da472b79.png)
