@@ -5,6 +5,7 @@ const { authentication } = require("../middlewares/authentication");
 const upload = require("../middlewares/upload");
 
 router.post("/register", upload.single("image"), UserController.register);
+router.post("/login", UserController.login);
 
 router.get("/getUserById/:_id", UserController.getUserById);
 router.get("/getUserByName/:name", UserController.getUserByName);
@@ -19,7 +20,6 @@ router.put(
 
 router.delete("/deleteUserById/:_id", authentication, UserController.deleteUserById);
 
-router.post("/login", UserController.login);
 router.delete("/logout", authentication, UserController.logout);
 router.get("/loggedIn", authentication, UserController.loggedIn);
 
