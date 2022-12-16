@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const PostController = require("../controllers/PostController");
-const { authentication, isPostAuthor } = require("../middlewares/authentication");
+const { authentication, isPostAuthor, isAdmin } = require("../middlewares/authentication");
 const upload = require("../middlewares/upload");
 
 router.post(
@@ -26,6 +26,14 @@ router.delete(
   isPostAuthor,
   PostController.deletePostById
 );
+
+router.delete(
+  "/deletePostAdmin/:_id",
+  authentication,
+  isAdmin,
+  PostController.deletePostById
+);
+
 router.put("/like/:_id", authentication, PostController.like);
 router.put("/disLike/:_id", authentication, PostController.disLike);
 
