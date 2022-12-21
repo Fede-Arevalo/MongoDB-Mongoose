@@ -37,7 +37,8 @@ const PostController = {
 
   async getPostById(req, res) {
     try {
-      const post = await Post.findById(req.params._id);
+      const post = await Post.findById(req.params._id).populate("commentIds");
+
       res.send(post);
     } catch (error) {
       console.error(error);
@@ -103,7 +104,9 @@ const PostController = {
       res.send(post);
     } catch (error) {
       console.error(error);
-      res.status(500).send({ msg: "Ha habido un problema con tu like en el post" });
+      res
+        .status(500)
+        .send({ msg: "Ha habido un problema con tu like en el post" });
     }
   },
 
@@ -117,7 +120,9 @@ const PostController = {
       res.send(post);
     } catch (error) {
       console.error(error);
-      res.status(500).send({ msg: "Ha habido un problema con tu disLike en el post" });
+      res
+        .status(500)
+        .send({ msg: "Ha habido un problema con tu disLike en el post" });
     }
   },
 };
