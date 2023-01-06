@@ -3,6 +3,10 @@ const ObjectId = mongoose.SchemaTypes.ObjectId;
 
 const PostSchema = new mongoose.Schema(
   {
+    userId: {
+      type: ObjectId,
+      ref: "User",
+    },
     image: {
       type: String,
     },
@@ -13,10 +17,6 @@ const PostSchema = new mongoose.Schema(
     body: {
       type: String,
       required: [true, "Por favor rellena el cuerpo del post"],
-    },
-    userId: {
-      type: ObjectId,
-      ref: "User",
     },
     commentIds: [{ type: ObjectId, ref: "Comment" }],
     likes_post: [{ type: ObjectId, ref: "User" }],

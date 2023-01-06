@@ -10,7 +10,7 @@ const UserController = {
       const user = await User.create({
         ...req.body,
         password,
-        image: req.file?.filename,
+        imageUser: req.file?.filename,
         role: "user",
       });
       res.status(201).send({ msg: "Usuario registrado con éxito", user });
@@ -22,7 +22,7 @@ const UserController = {
 
   async getUserById(req, res) {
     try {
-      const user = await User.findById(req.params._id)
+      const user = await User.findById(req.params._id);
       res.send(user);
     } catch (error) {
       console.error(error);
@@ -51,21 +51,24 @@ const UserController = {
 
   async getAllUsers(req, res) {
     try {
-      const users = await User.find()      
+      const users = await User.find();
       res.send(users);
     } catch (error) {
       console.error(error);
-      res
-        .status(500)
-        .send({ msg: "Ha habido un problema al traer todos los usuarios", error });
+      res.status(500).send({
+        msg: "Ha habido un problema al traer todos los usuarios",
+        error,
+      });
     }
   },
 
   async updateUserById(req, res) {
-    try {
+    try {    
+      const password = await bcrypt.hash(req.body.password, 10);
+
       const user = await User.findByIdAndUpdate(
         req.params._id,
-        { ...req.body, image: req.file?.filename },
+        { ...req.body, password, imageUser: req.file?.filename },
         {
           new: true,
         }
@@ -73,9 +76,7 @@ const UserController = {
       res.send({ msg: "Usuario actualizado con éxito!", user });
     } catch (error) {
       console.error(error);
-      res
-        .status(500)
-        .send({ msg: "Ha habido un problema al actualizar el usuario", error });
+      res.status(500).send({ msg: "Solo puedes actualizar tu usuario", error });
     }
   },
 
