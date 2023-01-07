@@ -63,20 +63,31 @@ const UserController = {
   },
 
   async updateUserById(req, res) {
-    try {    
-      const password = await bcrypt.hash(req.body.password, 10);
-
-      const user = await User.findByIdAndUpdate(
-        req.params._id,
-        { ...req.body, password, imageUser: req.file?.filename },
-        {
-          new: true,
-        }
-      );
-      res.send({ msg: "Usuario actualizado con éxito!", user });
+    try {
+      let hashedPassword;
+      const { password } = req.body;
+      if (password !== undefined) {
+        hashedPassword = await bcrypt.hashSync(password, 10);
+      }
+      const updatedUser = {
+        name: req.body.name,
+        imageUser: req.file?.filename,
+        email: req.body.email,
+        password: hashedPassword,
+        age: req.body.age,
+      };
+      const user = await User.findByIdAndUpdate(req.params._id, updatedUser, {
+        new: true,
+      });
+      res.status(201).send({ msg: "Usuario actualizado con éxito!", user });
     } catch (error) {
       console.error(error);
-      res.status(500).send({ msg: "Solo puedes actualizar tu usuario", error });
+      res
+        .status(400)
+        .send({
+          msg: "Hubo un problema al intentar actualizar el usuario",
+          error,
+        });
     }
   },
 
