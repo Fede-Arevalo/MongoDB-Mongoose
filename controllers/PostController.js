@@ -38,7 +38,14 @@ const PostController = {
 
   async getPostById(req, res) {
     try {
-      const post = await Post.findById(req.params._id).populate("commentIds");
+      const post = await Post.findById(req.params._id)
+      .populate("userId")
+      .populate({
+        path: "commentIds",
+        populate: {
+          path: "userId",
+        },
+      });
 
       res.send(post);
     } catch (error) {
@@ -101,7 +108,7 @@ const PostController = {
         req.params._id,
         { $push: { likes_post: req.user._id } },
         { new: true }
-      );
+      ).populate("userId");
       res.send(post);
     } catch (error) {
       console.error(error);
@@ -117,7 +124,7 @@ const PostController = {
         req.params._id,
         { $pull: { likes_post: req.user._id } },
         { new: true }
-      );
+      ).populate("userId");
       res.send(post);
     } catch (error) {
       console.error(error);

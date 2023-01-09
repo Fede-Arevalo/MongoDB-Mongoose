@@ -26,7 +26,7 @@ const CommentController = {
 
   async getAllComments(req, res) {
     try {
-      const comments = await Comment.find().populate("postId");
+      const comments = await Comment.find().populate("postId").populate("userId")
       res.send(comments);
     } catch (error) {
       console.error(error);
@@ -89,7 +89,9 @@ const CommentController = {
       res.send(comment);
     } catch (error) {
       console.error(error);
-      res.status(500).send({ msg: "Ha habido un problema con tu like en el comentario" });
+      res
+        .status(500)
+        .send({ msg: "Ha habido un problema con tu like en el comentario" });
     }
   },
 
@@ -103,7 +105,9 @@ const CommentController = {
       res.send(comment);
     } catch (error) {
       console.error(error);
-      res.status(500).send({ msg: "Ha habido un problema con tu disLike en el comentario" });
+      res
+        .status(500)
+        .send({ msg: "Ha habido un problema con tu disLike en el comentario" });
     }
   },
 };
