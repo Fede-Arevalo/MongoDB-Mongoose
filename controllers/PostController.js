@@ -39,13 +39,13 @@ const PostController = {
   async getPostById(req, res) {
     try {
       const post = await Post.findById(req.params._id)
-      .populate("userId")
-      .populate({
-        path: "commentIds",
-        populate: {
-          path: "userId",
-        },
-      });
+        .populate("userId")
+        .populate({
+          path: "commentIds",
+          populate: {
+            path: "userId",
+          },
+        });
 
       res.send(post);
     } catch (error) {
@@ -80,7 +80,7 @@ const PostController = {
         {
           new: true,
         }
-      );
+      ).populate("userId");
       res.send({ msg: "Post actualizado con éxito!", post });
     } catch (error) {
       console.error(error);
